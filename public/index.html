@@ -1,0 +1,77 @@
+<!-- HTML and JS Coded by: Daniel Shteremberg -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/p5.min.js"></script>
+  <style> body {padding: 0; margin: 0;} </style>
+</head>
+
+<body>
+	<script type="text/javascript">
+		var halfbox;
+
+		function setup(){
+			createCanvas(windowWidth, windowHeight);
+			halfbox = (windowHeight/3)/2;
+		}
+
+		function draw(){
+			background(79, 120, 140);
+			textSize(64);
+			textFont("Georgia");
+			textAlign(CENTER);
+			stroke(255);
+			strokeWeight(10);
+			if (touchIsDown && mouseY >= 0 && mouseY <= windowHeight/3){
+				fill(100);
+			} else {
+				fill(196, 142, 71);
+			}
+			rect(50, 0, windowWidth - 100, windowHeight/3);
+			noStroke();
+			fill(0);
+			text("Support Cement Station!", windowWidth/2, (windowHeight/3)/2);
+			stroke(255);
+			strokeWeight(10);
+			if (touchIsDown && mouseY >= windowHeight/3 && mouseY <= windowHeight - windowHeight/3){
+				fill(100);
+			} else {
+				fill(196, 142, 71);
+			}
+			rect(50, windowHeight/3, windowWidth - 100, windowHeight/3);
+			noStroke();
+			fill(0);
+			text("Support Blackgold Bayou!", windowWidth/2, (windowHeight/3) + halfbox);
+			stroke(255);
+			strokeWeight(10);
+			if (touchIsDown && mouseY >= windowHeight - windowHeight/3 && mouseY <= windowHeight){
+				fill(100);
+			} else {
+				fill(196, 142, 71);
+			}
+			rect(50, windowHeight - windowHeight/3, windowWidth - 100, windowHeight/3);
+			noStroke();
+			fill(0);
+			text("Support Lickskillet!", windowWidth/2, windowHeight - halfbox);
+		}
+
+		function touchEnded(){
+			if( mouseY >= 0 && mouseY <= windowHeight/3 ) {
+				socketScript("city1");
+			} else if ( mouseY >= windowHeight/3 && mouseY <= windowHeight - windowHeight/3){
+				socketScript("city2");
+			} else if ( mouseY >= windowHeight - windowHeight/3 && mouseY <= windowHeight){
+				socketScript("city3");
+			}
+		}
+
+		function socketScript(button) {
+			var socket = io('http://192.168.1.18:5000');
+			socket.emit('user', {user: button,
+				time: Date.now()
+			});
+		}
+	</script>
+</body>
+</html>
